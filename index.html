@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Почему вы годами учите English и не говорите?</title>
+    <script src="https://unpkg.com/@vkontakte/vk-bridge/dist/browser.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -407,12 +409,21 @@
             font-size: 1.1rem;
             transition: all 0.3s ease;
             box-shadow: 0 4px 20px rgba(212, 165, 116, 0.4);
+            cursor: pointer;
+            border: none;
         }
 
         .cta-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 25px rgba(212, 165, 116, 0.5);
             background: var(--highlight);
+        }
+
+        .share-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid white;
+            margin-top: 15px;
+            font-size: 0.9rem;
         }
 
         .engagement-box {
@@ -494,6 +505,10 @@
     </style>
 </head>
 <body>
+    <script>
+        vkBridge.send("VKWebAppInit", {});
+    </script>
+
     <div class="scroll-indicator" id="scrollIndicator"></div>
 
     <div class="hero">
@@ -709,13 +724,23 @@
         <div class="cta-section">
             <h2>Готовы попробовать коммуникативный подход?</h2>
             <p>Запишитесь на бесплатное пробное занятие — покажем, как это работает на практике</p>
-            <a href="http://vk.me/lingvoland" class="cta-button">Записаться на пробный урок</a>
+            <a href="https://vk.me/lingvoland" target="_blank" class="cta-button">Записаться на пробный урок</a>
+            <br>
+            <button onclick="shareApp()" class="cta-button share-button">Рассказать друзьям</button>
         </div>
 
         <div style="height: 3rem;"></div>
     </div>
 
     <script>
+        // Функция "Поделиться"
+        function shareApp() {
+            vkBridge.send("VKWebAppShowWallPostBox", {
+                "message": "Почему мы годами учим английский и не говорите? Нашел крутую статью с инсайтами и чек-листом! 🇬🇧",
+                "attachments": window.location.href // Поделится ссылкой на текущее приложение
+            });
+        }
+
         // Scroll indicator
         window.addEventListener('scroll', () => {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
